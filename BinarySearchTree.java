@@ -15,16 +15,16 @@ public class BinarySearchTree<T extends Comparable<T>> {
     } //insert                                                                                                                                                      
 
     public void insertHelper(NodeType<T> n, T key){
-        if(key.compareTo(n.info()) > 0 && n.right  == null){
+        if(key.compareTo((T)(n.info)) > 0 && n.right  == null){
             n.right = new NodeType(key);
         }
-        else if (key.compareTo(n.info) > 0) {
+        else if (key.compareTo((T)(n.info)) > 0) {
             insertHelper(n.right, key);
         }
-        else if(key.compareTo(n.info) < 0 && n.left  == null){
+        else if(key.compareTo((T)(n.info)) < 0 && n.left  == null){
             n.left = new NodeType(key);
         }
-        else if (key.compareTo(n.info) < 0) {
+        else if (key.compareTo((T)(n.info)) < 0) {
             insertHelper(n.left, key);
         }
         else  { //its equal                                                                                                                                         
@@ -37,8 +37,8 @@ public class BinarySearchTree<T extends Comparable<T>> {
         deleteHelper(root, key);
     }//delete                                                                                                                                                       
 
-    public void deleteHelper(NodeType n, T key) {
-        if(key.compareTo(n.info) == 0) {
+    public void deleteHelper(NodeType<T> n, T key) {
+        if(key.compareTo((T)n.info) == 0) {
             if(n.left == null && n.right == null) {
                 n = null;
             }
@@ -49,7 +49,7 @@ public class BinarySearchTree<T extends Comparable<T>> {
                 n = n.left;
             }
             else {
-                NodeType temp = n.right;
+                NodeType<T> temp = n.right;
                 while(temp.left != null) {
                     temp = temp.left;
                 }
@@ -70,21 +70,21 @@ public class BinarySearchTree<T extends Comparable<T>> {
         return searchHelper(root, item);
     }//search                                                                                                                                                       
 
-    public boolean searchHelper(NodeType n, T Key) {
-        if(key.compareTo(n.info) == 0) {
+    public boolean searchHelper(NodeType<T> n, T key) {
+        if(key.compareTo((T)n.info) == 0) {
             return true;
         }
-        if(key.compareTo(n.info) > 0 && n.right  == null){
+        if(key.compareTo((T)n.info) > 0 && n.right  == null){
             return false;
         }
-        else if (key.compareTo(n.info) > 0) {
-            searchHelper(n.right, key);
+        else if (key.compareTo((T)n.info) > 0) {
+            return searchHelper(n.right, key);
         }
-        else if(key.compareTo(n.info) < 0 && n.left  == null){
+        else if(key.compareTo((T)n.info) < 0 && n.left  == null){
             return false;
         }
-        else if (key.compareTo(n.info) < 0) {
-            searchHelper(n.left, key);
+        else { //key.compareTo((T)n.info) < 0                                                                                                                       
+            return searchHelper(n.left, key);
         }
 
     } //searchHelper                                                                                                                                                
@@ -92,8 +92,8 @@ public class BinarySearchTree<T extends Comparable<T>> {
     public void inOrder() {
         inOrderHelper(root);
     }
-    void inOrderHelper(NodeType n) {
-           if(n == null) {
+    void inOrderHelper(NodeType<T> n) {
+        if(n == null) {
             return;
         }
         else {
@@ -104,13 +104,35 @@ public class BinarySearchTree<T extends Comparable<T>> {
     }
 
     void getSingleParent(){
-        System.out.println("blah");
+        singleParentHelper(root);
+    }
+
+    public void singleParentHelper(NodeType<T> n) {
+        if(n == null) {
+            return;
+        }
+        else if(n.left == null ^ n.right == null) {
+            System.out.print(n.info + " ");
+        }
+
+        singleParentHelper(n.left);
+        singleParentHelper(n.right);
     }
 
 
     int getNumLeafNodes(){
 
-        return 0;
+        return leafNodeHelper(root);
+    }
+
+ public int leafNodeHelper(NodeType<T> n) {
+        if(n == null) {
+            return 0;
+        }
+        else if(n.left == null && n.right == null) {
+            return 1;
+        }
+        return leafNodeHelper(n.left) + leafNodeHelper(n.right);
     }
 
     void getCousins(T key){
@@ -121,4 +143,5 @@ public class BinarySearchTree<T extends Comparable<T>> {
 
 
 }
+
 
